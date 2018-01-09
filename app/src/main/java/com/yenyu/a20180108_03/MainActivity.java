@@ -1,5 +1,6 @@
 package com.yenyu.a20180108_03;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,13 +25,14 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Map<String,Object>> mylist = new ArrayList<>();
     boolean chks[]= new boolean[7];
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         lv = (ListView) findViewById(R.id.listView);
-        MyAdapter  adapter =new MyAdapter();
+        MyAdapter  adapter =new MyAdapter(MainActivity.this,mylist,chks);
         lv.setAdapter(adapter);
 
         HashMap<String,Object> m1 =new HashMap<>();
@@ -88,55 +90,6 @@ public class MainActivity extends AppCompatActivity {
         }
         Toast.makeText(MainActivity.this,"您選擇了"+sb.toString(),Toast.LENGTH_SHORT).show();
 
-    }
-    class MyAdapter extends BaseAdapter
-    {
-
-
-        @Override //回傳Adapter 有幾格
-        public int getCount() {
-            return mylist.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(final int position, View view, ViewGroup viewGroup) {
-            LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-            View v = inflater.inflate(R.layout.layout,null);
-
-            TextView tv = v.findViewById(R.id.textView);
-            TextView tv2 = v.findViewById(R.id.textView2);
-            ImageView img = v.findViewById(R.id.imageView);
-            CheckBox chk = v.findViewById(R.id.checkBox);
-            chk.setChecked(chks[position]); //
-            chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    chks[position]= b;
-                    if(b)
-                    {
-                        Toast.makeText(MainActivity.this,"您已選擇"+mylist.get(position).get("city"),Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(MainActivity.this,"您已取消"+mylist.get(position).get("city"),Toast.LENGTH_SHORT).show();                    }
-                }
-            });
-
-            tv.setText(mylist.get(position).get("city").toString());
-            tv2.setText(mylist.get(position).get("code").toString());
-            img.setImageResource(Integer.parseInt(mylist.get(position).get("img").toString()));
-            return v; //回傳自訂的View 出來
-        }
     }
 
 
